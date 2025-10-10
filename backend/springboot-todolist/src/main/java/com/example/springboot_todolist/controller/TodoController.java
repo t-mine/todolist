@@ -3,6 +3,7 @@ package com.example.springboot_todolist.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +32,10 @@ public class TodoController {
     }
 
     @GetMapping("/{id}")
-    public Optional<TodoEntity> findTodoById(@PathVariable("id") Long id) {
-        return employeeService.findById(id);
+    public ResponseEntity<TodoEntity> findTodoById(@PathVariable("id") Long id) {
+       return employeeService.findById(id)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
